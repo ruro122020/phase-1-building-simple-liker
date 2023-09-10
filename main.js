@@ -3,7 +3,37 @@ const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
-
+const likeBtns = document.querySelectorAll('footer ul li span')
+  likeBtns.forEach((heart)=>{
+    heart.addEventListener('click',(event)=>{
+      mimicServerCall()
+      .then((res)=>{
+        const heartIcon = event.target
+        console.log('heartIcon',heartIcon)  
+        console.log('heart', heart)
+        if(heartIcon.textContent === EMPTY_HEART){
+          //change the heart to a full heart
+          heartIcon.textContent = FULL_HEART
+          //add .activated-heart class to make the heart appear red
+          heartIcon.className = 'activated-heart'
+        }else{
+          heartIcon.textContent = EMPTY_HEART
+          heartIcon.classList.remove('activated-heart')
+        }
+    
+    
+      })
+      .catch((error)=>{
+        const errorElement = document.querySelector('#modal')
+        errorElement.classList.remove('hidden')
+        const messageElement = errorElement.querySelector('#modal-message')
+        messageElement.textContent = error
+        setTimeout(()=>{
+          errorElement.setAttribute('class', 'hidden')
+        }, 3000)
+      })
+    })
+  })
 
 
 
